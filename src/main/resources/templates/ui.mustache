@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fullstack Lab Application</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .stats-container {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .stats-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fullstack Lab Application</h1>
+        <div class="stats-container">
+            <div class="stats-title">Server Statistics</div>
+            <div id="stats-data">{{{ statsData }}}</div>
+        </div>
+    </div>
+    <script>
+        async function fetchStats() {
+            try {
+                const response = await fetch('/');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                document.getElementById('stats-data').innerHTML = `
+                    <div>Used Memory: ${data.usedMemory}</div>
+                    <div>Total Memory: ${data.totalMemory}</div>
+
+
+                    <div>Max Memory: ${data.maxMemory}</div>
+                    <div>Processors: ${data.processors}</div>
+                    <div>Uptime: ${data.uptime}</div>
+                `;
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('stats-data').innerHTML = '<div>Error fetching data</div>';
+            }
+        }
+
+        fetchStats();
+    </script>
+</body>
+</html>
